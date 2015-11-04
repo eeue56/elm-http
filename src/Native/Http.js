@@ -77,14 +77,20 @@ Elm.Native.Http.make = function(localRuntime) {
 				req.overrideMimeType(settings.desiredResponseType._0);
 			}
 
-			// actuall send the request
+			// actually send the request
 			if(request.body.ctor === "BodyFormData")
 			{
 				req.send(request.body.formData)
 			}
 			else
 			{
-				req.send(request.body._0);
+				// if there is no contained value, just call send
+				if (typeof request.body._0 === "undefined"){
+					req.send();
+				}
+				else {
+					req.send(request.body._0);
+				}
 			}
 		});
 	}
